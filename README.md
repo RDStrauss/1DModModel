@@ -3,7 +3,7 @@
 
 ## Model details
 
-The FORTRAN version of the 1D cosmic ray modulation model of Caballero-Lopez & Moraal (2004) is translated into Python3. The model can be run from teh command line:
+The FORTRAN version of the 1D cosmic ray modulation model of Caballero-Lopez & Moraal (2004) is translated into Python3. The model can be run from the command line:
 
 (base) fskrdts@fskrdts/Test_3 - Moraal comparison$ python Moraal_model.py 
 
