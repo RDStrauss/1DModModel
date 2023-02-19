@@ -5,9 +5,19 @@
 
 The FORTRAN version of the 1D cosmic ray modulation model of Caballero-Lopez & Moraal (2004) is translated into Python3. The model can be run from the command line:
 
-(base) fskrdts@fskrdts/Test_3 - Moraal comparison$ python Moraal_model.py 
+fskrdts@fskrdts:/Test_3 - Moraal comparison$ python Moraal_model.py 
 
-This just the basic model. More details and user-friendly edits will be done in the coming months.
+Followed by the plotting function:
+
+fskrdts@fskrdts:~/Test_5$ python plot_output.py 
+
+## Changes and updates
+
+Model is changed so that the effective radial mean-free-path (LAMBDA) is specified. 
+
+The rigidity dependence of the diffusion coefficient is then approximated as ~P^CK3, where CK3 can also be treated as a free paramater. 
+
+The LIS is now specified at 120 AU and by default the model only calculates the intensty at Earth (1 AU).
 
 ## References
 
