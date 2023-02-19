@@ -3,19 +3,17 @@
 
 ## Model details
 
-The FORTRAN version of the 1D cosmic ray modulation model of Caballero-Lopez & Moraal (2004) is translated into Python3. The model can be run from the command line:
+The FORTRAN version of the 1D cosmic ray modulation model of Caballero-Lopez & Moraal (2004) is translated into Python3. The model is contained in the functoin ONEDMODMODEL, in the file Moraal_model.py.
 
-fskrdts@fskrdts:/Test_3 - Moraal comparison$ python Moraal_model.py 
+The attached main.py file calls the ONEDMODMODEL(LAMBDA, CK3) with the free paramaters LAMBDA and CK3 (see below). Vectors containing the kinetic energy/nucleus (EK), the computed differential intensity at Earth (J_1AU), and the LIS (J_LIS) are returned.
 
-Followed by the plotting function:
+The main file, that included plotting subroutines, can be run from the command line:
 
-fskrdts@fskrdts:~/Test_5$ python plot_output.py 
+fskrdts@fskrdts:/Test_3 - Moraal comparison$ python main.py 
 
 ## Changes and updates
 
-Model is changed so that the effective radial mean-free-path (LAMBDA) is specified. 
-
-The rigidity dependence of the diffusion coefficient is then approximated as ~P^CK3, where CK3 can also be treated as a free paramater. 
+Model is changed so that the effective radial mean-free-path (LAMBDA) is specified. The rigidity dependence of the diffusion coefficient is then approximated as ~P^CK3, where CK3 can also be treated as a free paramater. 
 
 The LIS is now specified at 120 AU and by default the model only calculates the intensty at Earth (1 AU).
 
