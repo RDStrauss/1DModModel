@@ -1,10 +1,15 @@
+#------------------------------------------------------------------------
+# Python3 version of the 1D galactic cosmic ray modulation model of 
+# Caballero-Lopez and Moraal (2004). The model is called in the main.py file.
+# RD Strauss, February 2023, dutoit.strauss@nwu.ac.za
+
+#------------------------------------------------------------------------
 import matplotlib.pyplot as plt
 import numpy as np
 #------------------------------------------------------------------------
 # function to calculate T, BETA, and specifies LIS
 def MOMENTUM(P, E0, T, AZ, BETA):
     BETA = P/np.sqrt(P*P+E0*E0*AZ*AZ)
-    FNP = BETA*P
     T = P/BETA/AZ - E0
     return T, BETA
 
@@ -38,7 +43,16 @@ def ONEDMODMODEL(LAMBDA, CK3):
     CK2 = .0 # The exponent that determines the radial dependence of kappa
     E0 = .938 # The rest mass energy in GeV
     AZ = 1. # The species value of the cosmic ray population
-
+    
+    #------------------------------------------------------------------------
+    # Program units:
+    # P = rigidity in GV
+    # T = kinetic energy in GeV/nuc
+    # R = radial distance, AU
+    # DK = (radial part) of diffusion coefficient, 
+    # V = solar wind speed, units if 400km/s
+    # speed of light = 750 program units
+    
     #------------------------------------------------------------------------
     # Program placeholder variables
     BETA = 0. # Initiate the v/c ratio
@@ -129,13 +143,5 @@ def ONEDMODMODEL(LAMBDA, CK3):
         # Step down in rigidity
     return T_PRINT, J_1AU, J_LIS 
 
-#------------------------------------------------------------------------
-# Program units:
-# P = rigidity in GV
-# T = kinetic energy in GeV/nuc
-# R = radial distance, AU
-# DK = (radial part) of diffusion coefficient, 
-# V = solar wind speed, units if 400km/s
-# speed of light = 750 program units
 #------------------------------------------------------------------------
 

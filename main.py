@@ -1,3 +1,9 @@
+#------------------------------------------------------------------------
+# Subroutine that calls the Caballero-Lopez & Moraal (2004) 1D galactic
+# cosmic ray modulation model.
+# RD Strauss, February 2023, dutoit.strauss@nwu.ac.za
+
+#------------------------------------------------------------------------
 import matplotlib.pyplot as plt
 import numpy as np
 #-------------------------------------------------------------
