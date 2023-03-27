@@ -16,8 +16,22 @@ def MOMENTUM(P, E0, T, AZ, BETA):
 #------------------------------------------------------------------------
 # function to calculate the LIS 
 # FLIS is the LIS in differential intensity. Units will determine units throughout
-def LIS(P, T):
-    FLIS = 21.1*T**(-2.8)/(1. + 5.85*T**(-1.22) + 1.18*T**(-2.54))
+# The current LIS'se are taken from Bischoff et al. (2019): https://arxiv.org/pdf/1902.10438.pdf
+def LIS(P, T, SPECIES, BETA):
+    if (SPECIES == 'proton'):
+        FLIS = 2620./BETA/BETA*T**(1.1)*((T**(0.98) + 0.7**(0.98))/(1. + 0.7**(0.98)))**(-4.) + 30.*T*T*((T + 8.)/9.)**(-12.)
+    if (SPECIES == 'electron'):
+        FLIS = 255./BETA/BETA/T*((T + 0.63)/(1.63))**(-2.43) + 6.4*T*T*((T + 15.)/16.)**(-26.)
+    if (SPECIES == 'helium'):
+        FLIS = 163.4/BETA/BETA*T**(1.1)*((T**(0.97) + 0.58**(0.97))/(1. + 0.58**(0.97)))**(-4.)
+    if (SPECIES == 'carbon'):
+        FLIS = 3.3/BETA/BETA*T**(1.22)*((T**(0.9) + 0.63**(0.9))/(1. + 0.63**(0.9)))**(-4.43)
+    if (SPECIES == 'oxygen'):
+        FLIS = 3.3/BETA/BETA*T**(1.23)*((T**(0.86) + 0.62**(0.86))/(1. + 0.62**(0.86)))**(-4.63)
+    if (SPECIES == 'boron'):
+        FLIS = 1./BETA/BETA*T**(1.7)*((T + 0.685)/(1. + 0.685))**(-4.8) + 3e-4*T**(3)*((T + 0.204)/(1. + 0.204))**(-11)
+    if (SPECIES == 'positron'):
+        FLIS = 25./BETA/BETA/T**(0.1)*((T**(1.1) + 0.2**(1.1))/(1. + 0.2**(1.1)))**(-3.31) + 23.*T**(0.5)*((T + 2.2)/3.2)**(-9.5)
     return FLIS
 
 #------------------------------------------------------------------------
@@ -31,7 +45,7 @@ def SOLAR_WIND(V, DV, R, N):
     return V, DV
 
 #------------------------------------------------------------------------
-def ONEDMODMODEL(LAMBDA, CK3):
+def ONEDMODMODEL(LAMBDA, CK3, SPECIES):
     # Variables that might be changed
     N = 121 # Number of grid points in the radial direction
     # Using D = 1 and N = 121, puts the heliopause at 120 AU and R[2] at Earth
@@ -41,9 +55,15 @@ def ONEDMODMODEL(LAMBDA, CK3):
     DLNP = .02 # The grid size in the ln(P)-direction
     # The program units for kappa is 6 \times 10^{20} cm^2/s
     CK2 = .0 # The exponent that determines the radial dependence of kappa
-    E0 = .938 # The rest mass energy in GeV
-    AZ = 1. # The species value of the cosmic ray population
-    
+    E0 = .938 # The rest mass energy of ions in GeV
+    #SPECIES = 'protons' # The species value specifies the GCR species under consideration
+    AZ = 2. # The species value of the cosmic ray population
+    if (SPECIES == 'electron') or (SPECIES == 'proton') or (SPECIES == 'positron'):
+        AZ = 1
+    # For electrons and/or protons: ZA = 1, for all other (fully ionized) GCR species, AZ = 2
+    if (SPECIES == 'electron') or (SPECIES == 'positron'):
+        E0 = 0.5110/1000. # Electron trest mass energy in GeV
+    print('Species: ', SPECIES, AZ, E0, ' GeV')
     #------------------------------------------------------------------------
     # Program units:
     # P = rigidity in GV
@@ -86,7 +106,7 @@ def ONEDMODMODEL(LAMBDA, CK3):
     # Calculate T, BETA, and BETA*P at given P
     T, BETA = MOMENTUM(P, E0, T, AZ, BETA)
     # Calculate the LIS value at P
-    SPECTRUM = LIS(P, T)
+    SPECTRUM = LIS(P, T, SPECIES, BETA)
 
     CK1 = LAMBDA*BETA*750./3.   # The value of kappa_0, the reference value at Earth
 
@@ -112,7 +132,7 @@ def ONEDMODMODEL(LAMBDA, CK3):
         X_NEG[1] = -1.
         
         T, BETA = MOMENTUM(P/np.exp(DLNP/2.), E0, T, AZ, BETA)
-        SPECTRUM = LIS(P, T)
+        SPECTRUM = LIS(P, T, SPECIES, BETA)
         # Calculate LIS at half rigidity step
     
         for i in range(1, N):
@@ -126,7 +146,7 @@ def ONEDMODMODEL(LAMBDA, CK3):
         F[N - 1] = Y[N - 1] - X_POS[N - 1]*SPECTRUM/((P/np.exp(DLNP/2.))**2/AZ)
     
         T, BETA = MOMENTUM(P/np.exp(DLNP),E0,T,AZ,BETA)
-        SPECTRUM = LIS(P, T)
+        SPECTRUM = LIS(P, T, SPECIES, BETA)
         F[N] = SPECTRUM/(P/np.exp(DLNP))**2/AZ
     
         for i in range(N-1,0,-1):

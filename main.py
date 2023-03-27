@@ -20,9 +20,11 @@ from Moraal_model import ONEDMODMODEL
 
 LAMBDA = 0.25 # The effective radial mean-free-path in units of AU at 1 AU
 CK3 = 1.5 # The exponent that determines the rigidity dependence of kappa
+SPECIES = 'proton' # The species value specifies the GCR species under consideration
+# Options = proton, electron, helium, carbon, oxygen, boron, positron
 #------------------------------------------------------------------------
 
-KE, J_1AU, J_LIS = ONEDMODMODEL(LAMBDA, CK3)
+KE, J_1AU, J_LIS = ONEDMODMODEL(LAMBDA, CK3, SPECIES)
 
 #------------------------------------------------------------------------
 # file output to file
@@ -38,7 +40,7 @@ fig = plt.figure(figsize = (15,10))
 
 subplot1 = fig.add_subplot(111)
 subplot1.set_xlim(1,1e4)
-subplot1.set_ylim(1e-2, 1e2)
+subplot1.set_ylim(1e-2, 1e6)
 #subplot1.set_title('Parker Solar Probe', fontsize = 14)
 subplot1.set_xlabel('Kinetic energy (MeV)', fontsize = 16)
 subplot1.set_ylabel('Differential intensity', fontsize = 16)
