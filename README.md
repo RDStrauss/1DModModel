@@ -17,6 +17,8 @@ Model is changed so that the effective radial mean-free-path (LAMBDA) is specifi
 
 The LIS is now specified at 120 AU and by default the model only calculates the intensty at Earth (1 AU).
 
+The code now has a switch to change to different GCR species. This changes the rest mass energy, the Z/A ratio, and the LIS.
+
 ## References
 
 [Caballero-Lopez, R.A. & Moraal, H., 2004, Limitations of the force field equation to describe cosmic ray modulation, Journal of Geophysical Research: Space Physics, Volume 109, Issue A1, CiteID A01101](https://ui.adsabs.harvard.edu/abs/2004JGRA..109.1101C/abstract)
